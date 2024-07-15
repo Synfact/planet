@@ -3,9 +3,23 @@ package com.example.planet.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table
-public record DiscoverySource(@Id Long id, String name, String establishmentDate, String type, String stateOwner) {
+@AllArgsConstructor
+@NoArgsConstructor
+public class DiscoverySource {
+    @Id
+    private Long id;
 
+    private String name;
+
+    private String establishmentDate;
+
+    private String type;
+
+    private String stateOwner;
 }

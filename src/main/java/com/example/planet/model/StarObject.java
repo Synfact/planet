@@ -1,16 +1,30 @@
 package com.example.planet.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Date;
+import java.io.Serializable;
 
 @Entity
 @Table
-public record StarObject(@Id Long id,
-                         String text,
-                         Long mass,
-                         Long equatorialDiameter,
-                         Long surfaceTemperature,
-                         Date discoveryDate,
-                         DiscoverySource discoverySource,
-                         Type type) { }
+@Getter
+@Setter
+@RequiredArgsConstructor
+public class StarObject implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+
+    private Long mass;
+
+    private Long equatorialDiameter;
+
+    private String discoveryDate;
+
+    @ManyToOne
+    private DiscoverySource discoverySource;
+
+}
