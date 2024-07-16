@@ -1,3 +1,13 @@
 INSERT INTO DISCOVERY_SOURCE VALUES (1, 'date', 'name', 'USA', 'type');
 SELECT * FROM DISCOVERY_SOURCE ;
 SELECT * FROM STAR_OBJECT;
+
+
+
+
+{"name":"name",
+"mass":11111,
+"equatorialDiameter":12111,
+"discoveryDate":"string"
+
+}

@@ -19,6 +19,11 @@ public class StarObjectController {
         return starObjectService.getAllObjects();
     }
 
+    @GetMapping("/object/{id}")
+    private StarObject getObjects(@PathVariable Long id){
+        return starObjectService.getObjectById(id);
+    }
+
     @PostMapping("/object")
     private StarObject saveOne(@RequestBody StarObject starObject){
         return starObjectService.saveOne(starObject);
