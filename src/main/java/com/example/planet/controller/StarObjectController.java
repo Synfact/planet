@@ -3,10 +3,10 @@ package com.example.planet.controller;
 import com.example.planet.model.StarObject;
 import com.example.planet.service.StarObjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class StarObjectController {
     }
 
     @GetMapping("/object/{id}")
-    private StarObject getObjects(@PathVariable Long id){
+    private Optional<StarObject> getObject(@PathVariable Long id){
         return starObjectService.getObjectById(id);
     }
 

@@ -2,11 +2,13 @@ package com.example.planet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.Date;
 
 @Entity
-@Table
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -22,9 +24,9 @@ public class StarObject implements Serializable {
 
     private Long equatorialDiameter;
 
-    private String discoveryDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date discoveryDate;
 
-    @ManyToOne
-    private DiscoverySource discoverySource;
+    private Long discoverySourceId;
 
 }

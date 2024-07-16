@@ -1,25 +1,34 @@
 package com.example.planet.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.Date;
 
 @Entity
-@Table
-@AllArgsConstructor
-@NoArgsConstructor
-public class DiscoverySource {
+@Getter
+@Setter
+@RequiredArgsConstructor
+public class DiscoverySource implements Serializable {
+
     @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
 
-    private String establishmentDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date establishmentDate;
 
     private String type;
 
     private String stateOwner;
+
+
 }

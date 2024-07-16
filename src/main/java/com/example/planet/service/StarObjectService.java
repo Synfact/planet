@@ -3,13 +3,10 @@ package com.example.planet.service;
 import com.example.planet.model.StarObject;
 import com.example.planet.repository.StarObjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +18,8 @@ public class StarObjectService {
         return starObjectRepository.findAll();
     }
 
-    public StarObject getObjectById(Long id) {++
-        Iterable<Long> ids = Collections.singleton(id);
-        return starObjectRepository.findAllById(ids);
+    public Optional<StarObject> getObjectById(Long id) {
+        return starObjectRepository.findById(id);
     }
 
     public List<StarObject> saveMany(final List<StarObject> starObject) {

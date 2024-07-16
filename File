@@ -8,6 +8,6 @@ SELECT * FROM STAR_OBJECT;
 {"name":"name",
 "mass":11111,
 "equatorialDiameter":12111,
-"discoveryDate":"string"
-
+"discoveryDate":"string",
+"discoverySourceId":1
 }
