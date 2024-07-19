@@ -2,7 +2,6 @@ package com.example.planet.service;
 
 import com.example.planet.model.DiscoverySource;
 import com.example.planet.repository.DiscoverySourceRepository;
-import org.h2.command.dml.MergeUsing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,11 +24,9 @@ class DiscoverySourceServiceTest {
     @InjectMocks
     DiscoverySourceService discoverySourceService;
 
-    @BeforeEach
-    void setUp(){}
 
     @Test
-    void getDiscoverySourceById() {
+    void shouldGetOneDiscoverySourceById() {
         DiscoverySource discoverySource = buildDiscoverySource(1L);
         discoverySourceService.getSourceById(1L);
         assertEquals(1L, discoverySource.getId(),"discovery source should be 1L");
@@ -41,7 +38,7 @@ class DiscoverySourceServiceTest {
     }
 
     @Test
-    void getAllSources(){
+    void shouldGetAllSources(){
         var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
         when(discoverySourceRepository.findAll()).thenReturn(discoverySources);
         List<DiscoverySource> sources = discoverySourceService.getAllSources();
@@ -51,7 +48,7 @@ class DiscoverySourceServiceTest {
     }
 
     @Test
-    void saveOne(){
+    void shouldSaveOneSource(){
         var discoverySource = buildDiscoverySource(3L);
         when(discoverySourceRepository.save(discoverySource)).thenReturn(discoverySource);
         assertEquals(3, discoverySource.getId(),"discovery source should have ID 3");
@@ -59,7 +56,7 @@ class DiscoverySourceServiceTest {
     }
 
     @Test
-    void saveMany(){
+    void shouldsaveManySources(){
         var discoverySources = List.of(buildDiscoverySource(5L), buildDiscoverySource(6L), buildDiscoverySource(7L));
         assertEquals(3, discoverySources.size(),"discovery sources should have 3 elements");
         assertEquals(5L,discoverySources.get(0).getId(),"discovery source should have id 5");

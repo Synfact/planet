@@ -26,11 +26,9 @@ class StarObjectServiceTest {
     @InjectMocks
     StarObjectService starObjectService;
 
-    @BeforeEach
-    void setUp(){}
 
     @Test
-    void getObjectById() {
+    void getStarObjectById() {
         StarObject starObject = buildStarObject(1L);
         starObjectService.getObjectById(1L);
         assertEquals(1L, starObject.getId(),"starObject should have id 1");
@@ -41,7 +39,7 @@ class StarObjectServiceTest {
     }
 
     @Test
-    void getAllObjects() {
+    void getAllStarObjects() {
         var starObjects = List.of(buildStarObject(1L),buildStarObject(3L),buildStarObject(4L));
         when(starObjectRepository.findAll()).thenReturn(starObjects);
         List<StarObject> objects = starObjectService.getAllObjects();
@@ -52,7 +50,7 @@ class StarObjectServiceTest {
     }
 
     @Test
-    void saveMany() {
+    void saveManyStarObjects() {
         var starObjects = List.of(buildStarObject(2L),buildStarObject(5L));
         when(starObjectService.saveMany(starObjects)).thenReturn(starObjects);
         starObjectService.saveMany(starObjects);
@@ -62,7 +60,7 @@ class StarObjectServiceTest {
     }
 
     @Test
-    void saveOne() {
+    void saveOneStarObject() {
         var starObject = buildStarObject(77L);
         starObjectService.saveOne(starObject);
         assertEquals(77L, starObject.getId(),"starObject should have id 77");
