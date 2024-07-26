@@ -1,6 +1,7 @@
 package com.example.planet.controller;
 
 import com.example.planet.model.DiscoverySource;
+import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.service.DiscoverySourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,25 +15,39 @@ public class DiscoverySourceController {
 
     private final DiscoverySourceService discoverySourceService;
 
+    private final DiscoverySourceRepository discoverySourceRepository;
+
     @GetMapping("/sources")
-    public List<DiscoverySource> getAllSources() {
+    public List<DiscoverySource> getAllDiscoverySources() {
         System.out.println("getAllSources");
-        return discoverySourceService.getAllSources();
+        return discoverySourceService.getAllDiscoverySources();
     }
 
-    @GetMapping("/source/id")
-    public Optional<DiscoverySource> getSourceById(@RequestParam Long id) {
-        return discoverySourceService.getSourceById(id);
+    @GetMapping("/source/{id}")
+    public Optional<DiscoverySource> getDiscoverySourceById(@RequestParam Long id) {
+        return discoverySourceService.getDiscoverySourceById(id);
     }
 
     @PostMapping("/discoverySource")
-    public DiscoverySource addNewSource(@RequestBody DiscoverySource source) {
-        return discoverySourceService.saveOne(source);
+    public DiscoverySource addNewDiscoverySource(@RequestBody DiscoverySource source) {
+        return discoverySourceService.saveOneDiscoverySource(source);
     }
 
     @PostMapping("/discoverySources")
-    public List<DiscoverySource> saveAllSources(@RequestBody List<DiscoverySource> source) {
+    public List<DiscoverySource> addManyDiscoverySources(@RequestBody List<DiscoverySource> source) {
         System.out.println("addNewSources");
-        return discoverySourceService.saveAll(source);
+        return discoverySourceService.saveAllDiscoverySources(source);
+    }
+
+    @PutMapping("/discoverySource/{id}")
+    public Optional<DiscoverySource> updateDiscoverySource(@PathVariable Long id, @RequestBody DiscoverySource discoverySourceDetails) {
+        return discoverySourceRepository.findById(id)
+                .map(discoverySource -> {
+                    discoverySource.setName(discoverySourceDetails.getName());
+                    discoverySource.setType(discoverySourceDetails.getType());
+                    discoverySource.setEstablishmentDate(discoverySourceDetails.getEstablishmentDate());
+                    discoverySource.setStateOwner(discoverySourceDetails.getStateOwner());
+                    return discoverySourceService.saveOneDiscoverySource(discoverySource);
+                });
     }
 }

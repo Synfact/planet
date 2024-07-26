@@ -14,19 +14,19 @@ public class DiscoverySourceService {
 
     private final DiscoverySourceRepository discoverySourceRepository;
 
-    public List<DiscoverySource> getAllSources() {
+    public List<DiscoverySource> getAllDiscoverySources() {
         return discoverySourceRepository.findAll();
     }
 
-    public Optional<DiscoverySource> getSourceById(Long id) {
+    public Optional<DiscoverySource> getDiscoverySourceById(Long id) {
         return discoverySourceRepository.findById(id);
     }
 
-    public DiscoverySource saveOne(final DiscoverySource discoverySource) {
+    public DiscoverySource saveOneDiscoverySource(final DiscoverySource discoverySource) {
         return discoverySourceRepository.save(discoverySource);
     }
 
-    public List<DiscoverySource> saveAll(final List<DiscoverySource> discoverySources) {
+    public List<DiscoverySource> saveAllDiscoverySources(final List<DiscoverySource> discoverySources) {
         return discoverySourceRepository.saveAll(discoverySources);
     }
 }

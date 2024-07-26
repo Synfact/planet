@@ -1,9 +1,13 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: create
   datasource:
     url: jdbc:postgresql://localhost:5433/mydatabase
     username: myuser
     password: mypassword
     driver-class-name: org.postgresql.Driver
+
+  flyway:
+    locations: classpath:db/migration
+    schemas: public
+    user: myuser
+    password: mypassword
+    url: jdbc:postgresql://localhost:5433/mydatabase

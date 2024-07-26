@@ -13,4 +13,8 @@ SELECT * FROM STAR_OBJECT;
 }
 
 docker setup command
- docker run -d --name myPostgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user postgres
+initial : docker run --name postgres -e POSTGRES_PASSWORD=mypassword -e POSTGRES_USER=myuser -e POSTGRES_DB=mydatabase -p 5433:5432 -d postgres
+restart : docker restart postgres
+
+swagger
+http://localhost:8080/swagger-ui/index.html#/

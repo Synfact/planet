@@ -26,34 +26,34 @@ class DiscoverySourceControllerTest {
 
 
     @Test
-    void shouldGetOneSourceByID(){
+    void shouldGetOneDiscoverySourceByID(){
         DiscoverySource discoverySource = buildDiscoverySource(1L);
-        when(discoverySourceService.getSourceById(1L)).thenReturn(Optional.of(discoverySource));
-        discoverySourceController.getSourceById(1L);
-        assertEquals(Optional.of(discoverySource), discoverySourceController.getSourceById(1L));
+        when(discoverySourceService.getDiscoverySourceById(1L)).thenReturn(Optional.of(discoverySource));
+        discoverySourceController.getDiscoverySourceById(1L);
+        assertEquals(Optional.of(discoverySource), discoverySourceController.getDiscoverySourceById(1L));
     }
 
     @Test
-    void shouldGetAllSources(){
+    void shouldGetAllDiscoverySources(){
         var discoverySources = List.of(buildDiscoverySource(1L),buildDiscoverySource(2L),buildDiscoverySource(8L));
-        when(discoverySourceService.getAllSources()).thenReturn(discoverySources);
-        discoverySourceController.getAllSources();
+        when(discoverySourceService.getAllDiscoverySources()).thenReturn(discoverySources);
+        discoverySourceController.getAllDiscoverySources();
         assertEquals(3, discoverySources.size());
     }
 
     @Test
-    void shouldAddNewSource(){
+    void shouldAddNewDiscoverySource(){
         var discoverySource = buildDiscoverySource(21L);
-        when(discoverySourceService.saveOne(discoverySource)).thenReturn(discoverySource);
-        discoverySourceController.addNewSource(discoverySource);
-        assertEquals(discoverySource, discoverySourceController.addNewSource(discoverySource));
+        when(discoverySourceService.saveOneDiscoverySource(discoverySource)).thenReturn(discoverySource);
+        discoverySourceController.addNewDiscoverySource(discoverySource);
+        assertEquals(discoverySource, discoverySourceController.addNewDiscoverySource(discoverySource));
     }
 
     @Test
-    void shouldSaveAllSources(){
+    void shouldAddManyDiscoverySources(){
         var discoverySources = List.of(buildDiscoverySource(1L),buildDiscoverySource(2L));
-        when(discoverySourceService.saveAll(discoverySources)).thenReturn(discoverySources);
-        discoverySourceController.saveAllSources(discoverySources);
+        when(discoverySourceService.saveAllDiscoverySources(discoverySources)).thenReturn(discoverySources);
+        discoverySourceController.addManyDiscoverySources(discoverySources);
         assertEquals(2, discoverySources.size());
     }
 

@@ -14,17 +14,17 @@ public class StarObjectService {
 
     private final StarObjectRepository starObjectRepository;
 
-    public List<StarObject> getAllObjects() {
+    public List<StarObject> getAllStarObjects() {
         return starObjectRepository.findAll();
     }
 
-    public Optional<StarObject> getObjectById(Long id) {
+    public Optional<StarObject> getStarObjectById(Long id) {
         return starObjectRepository.findById(id);
     }
 
-    public List<StarObject> saveMany(final List<StarObject> starObject) {
+    public List<StarObject> saveManyStarObjects(final List<StarObject> starObject) {
         return starObjectRepository.saveAll(starObject);}
 
-    public StarObject saveOne(final StarObject starObject) {
+    public StarObject saveOneStarObject(final StarObject starObject) {
         return starObjectRepository.save(starObject);}
 }

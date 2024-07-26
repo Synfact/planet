@@ -1,10 +1,7 @@
 package com.example.planet.service;
 
 import com.example.planet.model.StarObject;
-import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.repository.StarObjectRepository;
-import org.hibernate.sql.ast.tree.expression.Star;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +27,7 @@ class StarObjectServiceTest {
     @Test
     void getStarObjectById() {
         StarObject starObject = buildStarObject(1L);
-        starObjectService.getObjectById(1L);
+        starObjectService.getStarObjectById(1L);
         assertEquals(1L, starObject.getId(),"starObject should have id 1");
         assertEquals("Star Object", starObject.getName(),"starObject should have name");
         assertEquals(Date.valueOf("1990-04-25"),starObject.getDiscoveryDate(),"starObject should have discovery date");
@@ -42,7 +39,7 @@ class StarObjectServiceTest {
     void getAllStarObjects() {
         var starObjects = List.of(buildStarObject(1L),buildStarObject(3L),buildStarObject(4L));
         when(starObjectRepository.findAll()).thenReturn(starObjects);
-        List<StarObject> objects = starObjectService.getAllObjects();
+        List<StarObject> objects = starObjectService.getAllStarObjects();
         assertEquals(3, objects.size(),"objects should have 3 objects");
         assertEquals(1L, objects.get(0).getId(),"objects should have id 1");
         assertEquals(3L, objects.get(1).getId(),"objects should have id 3");
@@ -52,17 +49,17 @@ class StarObjectServiceTest {
     @Test
     void saveManyStarObjects() {
         var starObjects = List.of(buildStarObject(2L),buildStarObject(5L));
-        when(starObjectService.saveMany(starObjects)).thenReturn(starObjects);
-        starObjectService.saveMany(starObjects);
+        when(starObjectService.saveManyStarObjects(starObjects)).thenReturn(starObjects);
+        starObjectService.saveManyStarObjects(starObjects);
         assertEquals(2, starObjects.size(),"objects should have 2 objects");
         assertEquals(2L, starObjects.get(0).getId(),"objects should have id 2");
         assertEquals(5L, starObjects.get(1).getId(),"objects should have id 5");
     }
 
     @Test
-    void saveOneStarObject() {
+    void saveOneStarObjectStarObject() {
         var starObject = buildStarObject(77L);
-        starObjectService.saveOne(starObject);
+        starObjectService.saveOneStarObject(starObject);
         assertEquals(77L, starObject.getId(),"starObject should have id 77");
         assertEquals("Star Object", starObject.getName(),"starObject should have name");
     }
