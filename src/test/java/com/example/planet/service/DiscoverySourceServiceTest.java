@@ -2,7 +2,6 @@ package com.example.planet.service;
 
 import com.example.planet.model.DiscoverySource;
 import com.example.planet.repository.DiscoverySourceRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +27,7 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldGetOneDiscoverySourceById() {
         DiscoverySource discoverySource = buildDiscoverySource(1L);
-        discoverySourceService.getSourceById(1L);
+        discoverySourceService.getDiscoverySourceById(1L);
         assertEquals(1L, discoverySource.getId(),"discovery source should be 1L");
         assertEquals("Hubble", discoverySource.getName(), "discovery source should be Hubble");
         assertEquals("USA", discoverySource.getStateOwner(), "discovery source should be USA");
@@ -38,18 +37,19 @@ class DiscoverySourceServiceTest {
     }
 
     @Test
-    void shouldGetAllSources(){
+    void shouldGetAllDiscoverySources(){
         var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
         when(discoverySourceRepository.findAll()).thenReturn(discoverySources);
-        List<DiscoverySource> sources = discoverySourceService.getAllSources();
+        List<DiscoverySource> sources = discoverySourceService.getAllDiscoverySources();
         assertEquals(2, sources.size(),"should be 2 sources");
         assertEquals(1L,sources.get(0).getId(),"discovery source(0) should have ID 1");
         assertEquals(2L,sources.get(1).getId(),"discovery source(1) should have ID 2");
     }
 
     @Test
-    void shouldSaveOneSource(){
+    void shouldSaveOneDiscoverySourceSource(){
         var discoverySource = buildDiscoverySource(3L);
+        discoverySourceService.saveOneDiscoverySource(discoverySource);
         assertEquals(3, discoverySource.getId(),"discovery source should have ID 3");
         assertEquals("Hubble", discoverySource.getName(), "discovery source should be called Hubble");
     }
@@ -57,6 +57,7 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldsaveManySources(){
         var discoverySources = List.of(buildDiscoverySource(5L), buildDiscoverySource(6L), buildDiscoverySource(7L));
+        discoverySourceService.saveAllDiscoverySources(discoverySources);
         assertEquals(3, discoverySources.size(),"discovery sources should have 3 elements");
         assertEquals(5L,discoverySources.get(0).getId(),"discovery source should have id 5");
         assertEquals(6L,discoverySources.get(1).getId(),"discovery source should have id 6");

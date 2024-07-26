@@ -15,24 +15,24 @@ public class DiscoverySourceController {
     private final DiscoverySourceService discoverySourceService;
 
     @GetMapping("/sources")
-    public List<DiscoverySource> getAllSources() {
+    public List<DiscoverySource> getAllDiscoverySources() {
         System.out.println("getAllSources");
-        return discoverySourceService.getAllSources();
+        return discoverySourceService.getAllDiscoverySources();
     }
 
     @GetMapping("/source/id")
-    public Optional<DiscoverySource> getSourceById(@RequestParam Long id) {
-        return discoverySourceService.getSourceById(id);
+    public Optional<DiscoverySource> getDiscoverySourceById(@RequestParam Long id) {
+        return discoverySourceService.getDiscoverySourceById(id);
     }
 
     @PostMapping("/discoverySource")
-    public DiscoverySource addNewSource(@RequestBody DiscoverySource source) {
-        return discoverySourceService.saveOne(source);
+    public DiscoverySource addNewDiscoverySource(@RequestBody DiscoverySource source) {
+        return discoverySourceService.saveOneDiscoverySource(source);
     }
 
     @PostMapping("/discoverySources")
-    public List<DiscoverySource> saveAllSources(@RequestBody List<DiscoverySource> source) {
+    public List<DiscoverySource> addManyDiscoverySources(@RequestBody List<DiscoverySource> source) {
         System.out.println("addNewSources");
-        return discoverySourceService.saveAll(source);
+        return discoverySourceService.saveAllDiscoverySources(source);
     }
 }
