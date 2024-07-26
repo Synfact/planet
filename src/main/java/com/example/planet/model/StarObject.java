@@ -8,13 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(name="t_star_object")
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class StarObject implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     private String name;
