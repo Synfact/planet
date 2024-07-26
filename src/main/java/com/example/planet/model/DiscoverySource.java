@@ -2,11 +2,9 @@ package com.example.planet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ValueGenerationType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity
