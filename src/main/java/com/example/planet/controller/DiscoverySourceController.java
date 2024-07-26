@@ -16,6 +16,7 @@ public class DiscoverySourceController {
 
     @GetMapping("/sources")
     public List<DiscoverySource> getAllSources() {
+        System.out.println("getAllSources");
         return discoverySourceService.getAllSources();
     }
 
@@ -31,6 +32,7 @@ public class DiscoverySourceController {
 
     @PostMapping("/discoverySources")
     public List<DiscoverySource> saveAllSources(@RequestBody List<DiscoverySource> source) {
+        System.out.println("addNewSources");
         return discoverySourceService.saveAll(source);
     }
 }
