@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity

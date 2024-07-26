@@ -11,3 +11,6 @@ SELECT * FROM STAR_OBJECT;
 "discoveryDate":"string",
 "discoverySourceId":1
 }
+
+docker setup command
+ docker run -d --name myPostgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user postgres

@@ -50,7 +50,6 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldSaveOneSource(){
         var discoverySource = buildDiscoverySource(3L);
-        when(discoverySourceRepository.save(discoverySource)).thenReturn(discoverySource);
         assertEquals(3, discoverySource.getId(),"discovery source should have ID 3");
         assertEquals("Hubble", discoverySource.getName(), "discovery source should be called Hubble");
     }
