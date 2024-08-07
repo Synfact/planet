@@ -4,13 +4,20 @@ import com.example.planet.model.DiscoverySource;
 import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.service.DiscoverySourceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
+
 @RestController
 @RequiredArgsConstructor
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class DiscoverySourceController {
 
     private final DiscoverySourceService discoverySourceService;
@@ -18,9 +25,11 @@ public class DiscoverySourceController {
     private final DiscoverySourceRepository discoverySourceRepository;
 
     @GetMapping("/sources")
-    public List<DiscoverySource> getAllDiscoverySources() {
+    public ResponseEntity<Page<DiscoverySource>> getAllDiscoverySources(int page, int size) {
         System.out.println("getAllSources");
-        return discoverySourceService.getAllDiscoverySources();
+        Page <DiscoverySource> discoverySources = discoverySourceService.getAllDiscoverySources(page, size);
+
+        return new ResponseEntity<>(discoverySources, HttpStatus.OK);
     }
 
     @GetMapping("/source/{id}")

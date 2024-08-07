@@ -3,6 +3,9 @@ package com.example.planet.service;
 import com.example.planet.model.StarObject;
 import com.example.planet.repository.StarObjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +17,9 @@ public class StarObjectService {
 
     private final StarObjectRepository starObjectRepository;
 
-    public List<StarObject> getAllStarObjects() {
-        return starObjectRepository.findAll();
+    public Page<StarObject> getAllStarObjects(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return starObjectRepository.findAll(pageable);
     }
 
     public Optional<StarObject> getStarObjectById(Long id) {
