@@ -7,9 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -39,11 +43,15 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldGetAllDiscoverySources(){
         var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
-        when(discoverySourceRepository.findAll()).thenReturn(discoverySources);
-        List<DiscoverySource> sources = discoverySourceService.getAllDiscoverySources();
-        assertEquals(2, sources.size(),"should be 2 sources");
-        assertEquals(1L,sources.get(0).getId(),"discovery source(0) should have ID 1");
-        assertEquals(2L,sources.get(1).getId(),"discovery source(1) should have ID 2");
+        final Pageable pageable = PageRequest.of(0,2);
+
+        when(discoverySourceService.getAllDiscoverySources(0,2)).thenReturn(new PageImpl<>(discoverySources,pageable,2));
+
+        var sources = discoverySourceService.getAllDiscoverySources(0,2);
+
+        assertEquals(2, sources.getTotalElements(), "should return 3 discovery sources");
+        assertEquals(1L, Objects.requireNonNull(sources.getContent().get(0).getId(), "discovery source id should be 1"));
+        assertEquals(2L, Objects.requireNonNull(sources.getContent().get(1).getId(), "discovery source id should be 2"));
     }
 
     @Test
