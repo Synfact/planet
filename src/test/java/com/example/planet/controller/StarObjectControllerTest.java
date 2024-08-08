@@ -46,14 +46,14 @@ class StarObjectControllerTest {
 
     @Test
     void shouldGetAllStarObjects() {
-        var starObjects = List.of(buildStarObject(2L),buildStarObject(3L),buildStarObject(4L));
+        final var starObjects = List.of(buildStarObject(2L),buildStarObject(3L),buildStarObject(4L));
         final PageImpl<StarObject> page = new PageImpl<>(starObjects);
         final PagedModel<EntityModel<StarObject>> pagedModel = PagedModel.wrap(starObjects, new PagedModel.PageMetadata(1,1,1));
 
         when(starObjectService.getAllStarObjects(0,10)).thenReturn(page);
         when(assembler.toModel(page)).thenReturn(pagedModel);
 
-        var actual = starObjectController.getAllStarObjects(0,10);
+        final var actual = starObjectController.getAllStarObjects(0,10);
 
         assertEquals(3, actual.getBody().getContent().stream().toList().size(),"should return 3 objects");
         assertEquals(2L,actual.getBody().getContent().stream().toList().get(0).getContent().getId(),"1st element should have id 2");
@@ -63,22 +63,26 @@ class StarObjectControllerTest {
 
     @Test
     void shouldAddNewStarObjectObject(){
-       var starObject = buildStarObject(21L);
+       final var starObject = buildStarObject(21L);
+
        when(starObjectService.saveOneStarObject(starObject)).thenReturn(starObject);
+
        starObjectController.addNewStarObject(starObject);
        assertEquals(starObject, starObjectController.addNewStarObject(starObject),"should return object with ID 21");
     }
 
     @Test
     void shouldaddManyStarObjects(){
-        var starObjects = List.of(buildStarObject(2L),buildStarObject(3L),buildStarObject(4L));
+        final var starObjects = List.of(buildStarObject(2L),buildStarObject(3L),buildStarObject(4L));
+
         when(starObjectService.saveManyStarObjects(starObjects)).thenReturn(starObjects);
         starObjectController.addManyStarObjects(starObjects);
+
         assertEquals(3,starObjects.size(),"should return 3 objects");
     }
 
     private static StarObject buildStarObject(Long id) {
-        var starObject = new StarObject();
+        final var starObject = new StarObject();
         starObject.setId(id);
         starObject.setName("Star Object");
         starObject.setDiscoveryDate(Date.valueOf("1990-04-25"));

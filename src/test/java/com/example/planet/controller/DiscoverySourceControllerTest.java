@@ -44,14 +44,14 @@ class DiscoverySourceControllerTest {
 
     @Test
     void shouldGetAllDiscoverySources() {
-        var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L), buildDiscoverySource(8L));
+        final var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L), buildDiscoverySource(8L));
         final PageImpl<DiscoverySource> page = new PageImpl<>(discoverySources);
         final PagedModel<EntityModel<DiscoverySource>> pagedModel = PagedModel.wrap(discoverySources,new PagedModel.PageMetadata(1,1,1));
 
         when(discoverySourceService.getAllDiscoverySources(0,3)).thenReturn(page);
         when(assembler.toModel(page)).thenReturn(pagedModel);
 
-        var actual = discoverySourceController.getAllDiscoverySources(0,3);
+        final var actual = discoverySourceController.getAllDiscoverySources(0,3);
 
         assertEquals(3, actual.getBody().getContent().stream().toList().size(), "should return 3 discovery sources");
         assertEquals(1L,actual.getBody().getContent().stream().toList().get(0).getContent().getId(), "1st element should have id 1");
@@ -61,7 +61,7 @@ class DiscoverySourceControllerTest {
 
     @Test
     void shouldAddNewDiscoverySource() {
-        var discoverySource = buildDiscoverySource(21L);
+        final var discoverySource = buildDiscoverySource(21L);
         when(discoverySourceService.saveOneDiscoverySource(discoverySource)).thenReturn(discoverySource);
 
         discoverySourceController.addNewDiscoverySource(discoverySource);
@@ -71,7 +71,7 @@ class DiscoverySourceControllerTest {
 
     @Test
     void shouldAddManyDiscoverySources() {
-        var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
+        final var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
 
         when(discoverySourceService.saveAllDiscoverySources(discoverySources)).thenReturn(discoverySources);
         discoverySourceController.addManyDiscoverySources(discoverySources);
@@ -80,7 +80,7 @@ class DiscoverySourceControllerTest {
     }
 
     private static DiscoverySource buildDiscoverySource(Long id) {
-        var discoverySource = new DiscoverySource();
+        final var discoverySource = new DiscoverySource();
         discoverySource.setId(id);
         discoverySource.setName("Hubble");
         discoverySource.setEstablishmentDate(Date.valueOf("1990-04-25"));

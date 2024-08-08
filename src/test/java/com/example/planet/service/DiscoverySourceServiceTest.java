@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -31,7 +30,9 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldGetOneDiscoverySourceById() {
         DiscoverySource discoverySource = buildDiscoverySource(1L);
+
         discoverySourceService.getDiscoverySourceById(1L);
+
         assertEquals(1L, discoverySource.getId(),"discovery source should be 1L");
         assertEquals("Hubble", discoverySource.getName(), "discovery source should be Hubble");
         assertEquals("USA", discoverySource.getStateOwner(), "discovery source should be USA");
@@ -42,11 +43,11 @@ class DiscoverySourceServiceTest {
 
     @Test
     void shouldGetAllDiscoverySources(){
-        var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
+        final var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
         final Pageable pageable = PageRequest.of(0,10);
 
-        when(discoverySourceService.getAllDiscoverySources(0,10)).thenReturn(new PageImpl<>(discoverySources,pageable,2));
-        var sources = discoverySourceService.getAllDiscoverySources(0,10);
+        when(discoverySourceRepository.findAll(PageRequest.of(0,10))).thenReturn(new PageImpl<>(discoverySources,pageable,2));
+        final var sources = discoverySourceService.getAllDiscoverySources(0,10);
 
         assertEquals(2, sources.getTotalElements(), "should return 3 discovery sources");
         assertEquals(1L, sources.getContent().get(0).getId(), "discovery source id should be 1");
@@ -55,16 +56,20 @@ class DiscoverySourceServiceTest {
 
     @Test
     void shouldSaveOneDiscoverySourceSource(){
-        var discoverySource = buildDiscoverySource(3L);
+        final var discoverySource = buildDiscoverySource(3L);
+
         discoverySourceService.saveOneDiscoverySource(discoverySource);
+
         assertEquals(3, discoverySource.getId(),"discovery source should have ID 3");
         assertEquals("Hubble", discoverySource.getName(), "discovery source should be called Hubble");
     }
 
     @Test
     void shouldsaveManySources(){
-        var discoverySources = List.of(buildDiscoverySource(5L), buildDiscoverySource(6L), buildDiscoverySource(7L));
+        final var discoverySources = List.of(buildDiscoverySource(5L), buildDiscoverySource(6L), buildDiscoverySource(7L));
+
         discoverySourceService.saveAllDiscoverySources(discoverySources);
+
         assertEquals(3, discoverySources.size(),"discovery sources should have 3 elements");
         assertEquals(5L,discoverySources.get(0).getId(),"discovery source should have id 5");
         assertEquals(6L,discoverySources.get(1).getId(),"discovery source should have id 6");
@@ -72,7 +77,7 @@ class DiscoverySourceServiceTest {
     }
 
     private static DiscoverySource buildDiscoverySource(Long id){
-        var discoverySource = new DiscoverySource();
+        final var discoverySource = new DiscoverySource();
         discoverySource.setId(id);
         discoverySource.setName("Hubble");
         discoverySource.setEstablishmentDate(Date.valueOf("1990-04-25"));

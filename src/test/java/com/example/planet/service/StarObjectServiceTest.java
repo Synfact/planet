@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -41,10 +40,10 @@ class StarObjectServiceTest {
 
     @Test
     void getAllStarObjects() {
-        var starObjects = List.of(buildStarObject(1L),buildStarObject(3L),buildStarObject(4L));
+        final var starObjects = List.of(buildStarObject(1L),buildStarObject(3L),buildStarObject(4L));
         final Pageable pageable = PageRequest.of(0,10);
 
-        when(starObjectService.getAllStarObjects(0,10)).thenReturn(new PageImpl<>(starObjects,pageable,3));
+        when(starObjectRepository.findAll(PageRequest.of(0,10))).thenReturn(new PageImpl<>(starObjects,pageable,3));
         var objects = starObjectService.getAllStarObjects(0,10);
 
         assertEquals(3, objects.getTotalElements(),"objects should have 3 objects");
@@ -55,8 +54,8 @@ class StarObjectServiceTest {
 
     @Test
     void saveManyStarObjects() {
-        var starObjects = List.of(buildStarObject(2L),buildStarObject(5L));
-        when(starObjectService.saveManyStarObjects(starObjects)).thenReturn(starObjects);
+        final var starObjects = List.of(buildStarObject(2L),buildStarObject(5L));
+        when(starObjectRepository.saveAll(starObjects)).thenReturn(starObjects);
         starObjectService.saveManyStarObjects(starObjects);
         assertEquals(2, starObjects.size(),"objects should have 2 objects");
         assertEquals(2L, starObjects.get(0).getId(),"objects should have id 2");
@@ -65,14 +64,14 @@ class StarObjectServiceTest {
 
     @Test
     void saveOneStarObjectStarObject() {
-        var starObject = buildStarObject(77L);
+        final var starObject = buildStarObject(77L);
         starObjectService.saveOneStarObject(starObject);
         assertEquals(77L, starObject.getId(),"starObject should have id 77");
         assertEquals("Star Object", starObject.getName(),"starObject should have name");
     }
 
     private static StarObject buildStarObject(Long id){
-        var starObject = new StarObject();
+        final var starObject = new StarObject();
         starObject.setId(id);
         starObject.setName("Star Object");
         starObject.setDiscoveryDate(Date.valueOf("1990-04-25"));
