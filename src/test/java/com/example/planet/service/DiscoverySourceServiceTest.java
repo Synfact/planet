@@ -43,15 +43,14 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldGetAllDiscoverySources(){
         var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
-        final Pageable pageable = PageRequest.of(0,2);
+        final Pageable pageable = PageRequest.of(0,10);
 
-        when(discoverySourceService.getAllDiscoverySources(0,2)).thenReturn(new PageImpl<>(discoverySources,pageable,2));
-
-        var sources = discoverySourceService.getAllDiscoverySources(0,2);
+        when(discoverySourceService.getAllDiscoverySources(0,10)).thenReturn(new PageImpl<>(discoverySources,pageable,2));
+        var sources = discoverySourceService.getAllDiscoverySources(0,10);
 
         assertEquals(2, sources.getTotalElements(), "should return 3 discovery sources");
-        assertEquals(1L, Objects.requireNonNull(sources.getContent().get(0).getId(), "discovery source id should be 1"));
-        assertEquals(2L, Objects.requireNonNull(sources.getContent().get(1).getId(), "discovery source id should be 2"));
+        assertEquals(1L, sources.getContent().get(0).getId(), "discovery source id should be 1");
+        assertEquals(2L, sources.getContent().get(1).getId(), "discovery source id should be 2");
     }
 
     @Test

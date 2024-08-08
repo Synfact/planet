@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -12,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class DiscoverySource implements Serializable {
+public class DiscoverySource {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -4,8 +4,9 @@ import com.example.planet.model.DiscoverySource;
 import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.service.DiscoverySourceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,22 +14,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 
 @RestController
 @RequiredArgsConstructor
-@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class DiscoverySourceController {
 
     private final DiscoverySourceService discoverySourceService;
 
     private final DiscoverySourceRepository discoverySourceRepository;
 
-    @GetMapping("/sources")
-    public ResponseEntity<Page<DiscoverySource>> getAllDiscoverySources(int page, int size) {
-        System.out.println("getAllSources");
-        Page <DiscoverySource> discoverySources = discoverySourceService.getAllDiscoverySources(page, size);
+    private final PagedResourcesAssembler<DiscoverySource> assembler;
 
+    @GetMapping("/sources")
+    public ResponseEntity<PagedModel<EntityModel<DiscoverySource>>> getAllDiscoverySources(int page, int size) {
+        var discoverySources = assembler.toModel(discoverySourceService.getAllDiscoverySources(page, size));
         return new ResponseEntity<>(discoverySources, HttpStatus.OK);
     }
 
