@@ -4,8 +4,9 @@ import com.example.planet.model.StarObject;
 import com.example.planet.repository.StarObjectRepository;
 import com.example.planet.service.StarObjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 
 @RestController
 @RequiredArgsConstructor
-@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class StarObjectController {
 
     private final StarObjectService starObjectService;
 
     private final StarObjectRepository starObjectRepository;
 
+    private final PagedResourcesAssembler<StarObject> assembler;
+
     @GetMapping("/object")
-    public ResponseEntity<Page<StarObject>> getAllStarObjects(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<PagedModel<EntityModel<StarObject>>> getAllStarObjects(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size) {
-        Page<StarObject> starObjects = starObjectService.getAllStarObjects(page, size);
+        var starObjects = assembler.toModel(starObjectService.getAllStarObjects(page, size));
         return new ResponseEntity<>(starObjects, HttpStatus.OK);
     }
 

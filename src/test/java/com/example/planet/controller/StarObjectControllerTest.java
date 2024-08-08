@@ -1,5 +1,6 @@
 package com.example.planet.controller;
 
+import com.example.planet.model.DiscoverySource;
 import com.example.planet.model.StarObject;
 import com.example.planet.service.StarObjectService;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.EntityModel;
 
 import java.sql.Date;
 import java.util.List;
@@ -21,6 +29,9 @@ class StarObjectControllerTest {
     @Mock
     StarObjectService starObjectService;
 
+    @Mock
+    PagedResourcesAssembler<StarObject> assembler;
+
     @InjectMocks
     StarObjectController starObjectController;
 
@@ -32,17 +43,23 @@ class StarObjectControllerTest {
         assertEquals(Optional.of(starObject),starObjectController.getStarObjectById(1L),"should return object with ID 1");
 
     }
-//TODO Fix
-    //@Test
-    //void shouldGetAllStarObjects() {
-    //    var starObjects = List.of(buildStarObject(2L),buildStarObject(3L),buildStarObject(4L));
-    //    when(starObjectService.getAllStarObjects(0,10)).thenReturn((Page<StarObject>) starObjects);
-    //    starObjectController.getAllStarObjects(0,10);
-    //    assertEquals(3,starObjects.size(),"should return 3 objects");
-    //    assertEquals(2L,starObjects.get(0).getId(),"should return 2 objects");
-    //    assertEquals(3L,starObjects.get(1).getId(),"should return 3 objects");
-    //    assertEquals(4L,starObjects.get(2).getId(),"should return 4 objects");
-    //}
+
+    @Test
+    void shouldGetAllStarObjects() {
+        var starObjects = List.of(buildStarObject(2L),buildStarObject(3L),buildStarObject(4L));
+        final PageImpl<StarObject> page = new PageImpl<>(starObjects);
+        final PagedModel<EntityModel<StarObject>> pagedModel = PagedModel.wrap(starObjects, new PagedModel.PageMetadata(1,1,1));
+
+        when(starObjectService.getAllStarObjects(0,10)).thenReturn(page);
+        when(assembler.toModel(page)).thenReturn(pagedModel);
+
+        var actual = starObjectController.getAllStarObjects(0,10);
+
+        assertEquals(3, actual.getBody().getContent().stream().toList().size(),"should return 3 objects");
+        assertEquals(2L,actual.getBody().getContent().stream().toList().get(0).getContent().getId(),"1st element should have id 2");
+        assertEquals(3L,actual.getBody().getContent().stream().toList().get(1).getContent().getId(),"2st element should have id 3");
+        assertEquals(4L,actual.getBody().getContent().stream().toList().get(2).getContent().getId(),"3st element should have id 4");
+    }
 
     @Test
     void shouldAddNewStarObjectObject(){

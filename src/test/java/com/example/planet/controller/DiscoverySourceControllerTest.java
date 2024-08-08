@@ -8,12 +8,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +24,9 @@ class DiscoverySourceControllerTest {
 
     @Mock
     DiscoverySourceService discoverySourceService;
+
+    @Mock
+    PagedResourcesAssembler<DiscoverySource> assembler;
 
     @InjectMocks
     DiscoverySourceController discoverySourceController;
@@ -42,18 +45,18 @@ class DiscoverySourceControllerTest {
     @Test
     void shouldGetAllDiscoverySources() {
         var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L), buildDiscoverySource(8L));
-        final Pageable pageable = PageRequest.of(0, 3);
-        when(discoverySourceService.getAllDiscoverySources(0, 3))
-                .thenReturn(new PageImpl<>(discoverySources, pageable, 3));
+        final PageImpl<DiscoverySource> page = new PageImpl<>(discoverySources);
+        final PagedModel<EntityModel<DiscoverySource>> pagedModel = PagedModel.wrap(discoverySources,new PagedModel.PageMetadata(1,1,1));
 
-        var actual = discoverySourceController.getAllDiscoverySources(0, 3);
+        when(discoverySourceService.getAllDiscoverySources(0,3)).thenReturn(page);
+        when(assembler.toModel(page)).thenReturn(pagedModel);
 
-        assertEquals(3, Objects.requireNonNull(actual.getBody()).getSize(), "should return 3 discovery sources");
-        //TODO Fix
-        assertEquals(1L, Objects.requireNonNull(actual.getBody().stream().findAny().get()).getId(), "should return 1 discovery source");
-        //assertEquals(8L, , "should return 1 discovery source");
-        //assertEquals(2L, Objects.requireNonNull(actual.getBody().stream().findAny().get()).getId(), "should return 1 discovery source");
+        var actual = discoverySourceController.getAllDiscoverySources(0,3);
 
+        assertEquals(3, actual.getBody().getContent().stream().toList().size(), "should return 3 discovery sources");
+        assertEquals(1L,actual.getBody().getContent().stream().toList().get(0).getContent().getId(), "1st element should have id 1");
+        assertEquals(2L,actual.getBody().getContent().stream().toList().get(1).getContent().getId(), "2st element should have id 2");
+        assertEquals(8L,actual.getBody().getContent().stream().toList().get(2).getContent().getId(), "3st element should have id 8");
     }
 
     @Test

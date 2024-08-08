@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class StarObject implements Serializable {
+public class StarObject{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

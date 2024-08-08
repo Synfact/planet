@@ -7,9 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -34,17 +38,20 @@ class StarObjectServiceTest {
         assertEquals(1000000L,starObject.getEquatorialDiameter(),"starObject should have equatorial diameter");
         assertEquals(1L,starObject.getDiscoverySourceId(),"starObject should have discovery source id");
     }
-//TODO Fix
-    //@Test
-    //void getAllStarObjects() {
-    //    var starObjects = List.of(buildStarObject(1L),buildStarObject(3L),buildStarObject(4L));
-    //    when(starObjectRepository.findAll()).thenReturn(starObjects);
-    //    List<StarObject> objects = (List<StarObject>) starObjectService.getAllStarObjects(0,10);
-    //    assertEquals(3, objects.size(),"objects should have 3 objects");
-    //    assertEquals(1L, objects.get(0).getId(),"objects should have id 1");
-    //    assertEquals(3L, objects.get(1).getId(),"objects should have id 3");
-    //    assertEquals(4L, objects.get(2).getId(),"objects should have id 4");
-    //}
+
+    @Test
+    void getAllStarObjects() {
+        var starObjects = List.of(buildStarObject(1L),buildStarObject(3L),buildStarObject(4L));
+        final Pageable pageable = PageRequest.of(0,10);
+
+        when(starObjectService.getAllStarObjects(0,10)).thenReturn(new PageImpl<>(starObjects,pageable,3));
+        var objects = starObjectService.getAllStarObjects(0,10);
+
+        assertEquals(3, objects.getTotalElements(),"objects should have 3 objects");
+        assertEquals(1L, objects.getContent().get(0).getId(),"objects should have id 1");
+        assertEquals(3L, objects.getContent().get(1).getId(),"objects should have id 3");
+        assertEquals(4L, objects.getContent().get(2).getId(),"objects should have id 4");
+    }
 
     @Test
     void saveManyStarObjects() {
