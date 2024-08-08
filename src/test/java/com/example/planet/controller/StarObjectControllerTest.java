@@ -81,6 +81,24 @@ class StarObjectControllerTest {
         assertEquals(3,starObjects.size(),"should return 3 objects");
     }
 
+    @Test
+    void shouldUpdateStarObject(){
+        final var starObject = buildStarObject(21L);
+        final var updatedStarObject = new StarObject();
+        updatedStarObject.setId(5L);
+        updatedStarObject.setName("updatedName");
+        updatedStarObject.setDiscoveryDate(Date.valueOf("2020-01-01"));
+        updatedStarObject.setEquatorialDiameter(2L);
+
+        when(starObjectService.getStarObjectById(21L)).thenReturn(Optional.of(starObject));
+        when(starObjectService.saveOneStarObject(starObject)).thenReturn(updatedStarObject);
+        var actual = starObjectController.updateStarObject(21L, updatedStarObject);
+
+        assertEquals(updatedStarObject.getEquatorialDiameter(), actual.get().getEquatorialDiameter(), "should return 2L");
+        assertEquals(updatedStarObject.getName(), actual.get().getName(), "should return updatedName");
+        assertEquals(updatedStarObject.getDiscoveryDate(), actual.get().getDiscoveryDate(), "should return 2020-01-01");
+    }
+
     private static StarObject buildStarObject(Long id) {
         final var starObject = new StarObject();
         starObject.setId(id);

@@ -21,8 +21,6 @@ public class StarObjectController {
 
     private final StarObjectService starObjectService;
 
-    private final StarObjectRepository starObjectRepository;
-
     private final PagedResourcesAssembler<StarObject> assembler;
 
     @GetMapping("/object")
@@ -49,7 +47,7 @@ public class StarObjectController {
 
     @PutMapping("/object")
     public Optional<StarObject> updateStarObject(@PathVariable Long id, @RequestBody StarObject starObject) {
-        return starObjectRepository.findById(id)
+        return starObjectService.getStarObjectById(id)
                 .map(starObject1 -> {
                             starObject1.setName(starObject.getName());
                             starObject1.setEquatorialDiameter(starObject.getEquatorialDiameter());

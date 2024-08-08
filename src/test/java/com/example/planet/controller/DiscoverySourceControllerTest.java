@@ -1,6 +1,7 @@
 package com.example.planet.controller;
 
 import com.example.planet.model.DiscoverySource;
+import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.service.DiscoverySourceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,6 +78,26 @@ class DiscoverySourceControllerTest {
         discoverySourceController.addManyDiscoverySources(discoverySources);
 
         assertEquals(2, discoverySources.size());
+    }
+
+    @Test
+    void shouldUpdateDiscoverySource() {
+        final var discoverySource = buildDiscoverySource(1L);
+        final var updatedDiscoverySource = new DiscoverySource();
+        updatedDiscoverySource.setName("updatedName");
+        updatedDiscoverySource.setId(1L);
+        updatedDiscoverySource.setEstablishmentDate(Date.valueOf("2000-07-12"));
+        updatedDiscoverySource.setType("newType");
+        updatedDiscoverySource.setStateOwner("owner");
+
+        when(discoverySourceService.getDiscoverySourceById(1L)).thenReturn(Optional.of(discoverySource));
+        when(discoverySourceService.saveOneDiscoverySource(discoverySource)).thenReturn(updatedDiscoverySource);
+
+        var actualDiscoverySource = discoverySourceController.updateDiscoverySource(1L,updatedDiscoverySource);
+
+        assertEquals(updatedDiscoverySource.getName(), actualDiscoverySource.get().getName(), "updated name should be updatedName");
+        assertEquals(updatedDiscoverySource.getType(), actualDiscoverySource.get().getType(), "updated type should be newType");
+        assertEquals(updatedDiscoverySource.getStateOwner(), actualDiscoverySource.get().getStateOwner(), "updated state owner should be owner");
     }
 
     private static DiscoverySource buildDiscoverySource(Long id) {

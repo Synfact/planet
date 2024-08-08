@@ -21,8 +21,6 @@ public class DiscoverySourceController {
 
     private final DiscoverySourceService discoverySourceService;
 
-    private final DiscoverySourceRepository discoverySourceRepository;
-
     private final PagedResourcesAssembler<DiscoverySource> assembler;
 
     @GetMapping("/sources")
@@ -49,7 +47,7 @@ public class DiscoverySourceController {
 
     @PutMapping("/discoverySource/{id}")
     public Optional<DiscoverySource> updateDiscoverySource(@PathVariable Long id, @RequestBody DiscoverySource discoverySourceDetails) {
-        return discoverySourceRepository.findById(id)
+        return discoverySourceService.getDiscoverySourceById(id)
                 .map(discoverySource -> {
                     discoverySource.setName(discoverySourceDetails.getName());
                     discoverySource.setType(discoverySourceDetails.getType());
