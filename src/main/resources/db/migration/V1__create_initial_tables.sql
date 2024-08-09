@@ -15,6 +15,7 @@ CREATE TABLE t_star_object
     discovery_source_id bigint,
     equatorial_diameter bigint,
     mass                bigint,
-    name                VARCHAR(255)
+    name                VARCHAR(255),
+    type                VARCHAR(255)
 );
 

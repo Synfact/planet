@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.planet.model.Type.*;
+
 @Service
 @RequiredArgsConstructor
 public class StarObjectService {
@@ -27,8 +29,23 @@ public class StarObjectService {
     }
 
     public List<StarObject> saveManyStarObjects(final List<StarObject> starObject) {
-        return starObjectRepository.saveAll(starObject);}
+        for (StarObject o : starObject) {
+            defineTypeOfStar(o);
+        }
+        return starObjectRepository.saveAll(starObject);
+    }
 
     public StarObject saveOneStarObject(final StarObject starObject) {
-        return starObjectRepository.save(starObject);}
+        defineTypeOfStar(starObject);
+        return starObjectRepository.save(starObject);
+    }
+
+    public void defineTypeOfStar(final StarObject starObject) {
+        if (starObject.getMass() > 1000L && starObject.getMass() < 10000L) {
+            starObject.setType(PLANET);
+        } else if (starObject.getMass() > 10000L && starObject.getMass() < 100000L) {
+            starObject.setType(STAR);
+        } else
+            starObject.setType(BLACK_HOLE);
+    }
 }

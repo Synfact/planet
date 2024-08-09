@@ -77,6 +77,7 @@ class StarObjectServiceTest {
         starObject.setDiscoveryDate(Date.valueOf("1990-04-25"));
         starObject.setEquatorialDiameter(1000000L);
         starObject.setDiscoverySourceId(1L);
+        starObject.setMass(1000L);
         return starObject;
     }
 }
