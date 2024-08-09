@@ -31,5 +31,4 @@ public class StarObject{
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private ObjectType objectType;
-
 }
