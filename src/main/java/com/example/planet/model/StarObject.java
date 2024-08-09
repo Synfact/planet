@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -28,5 +27,9 @@ public class StarObject{
     private Date discoveryDate;
 
     private Long discoverySourceId;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ObjectType objectType;
 
 }
