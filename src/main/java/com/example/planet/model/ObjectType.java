@@ -1,6 +1,6 @@
 package com.example.planet.model;
 
-public enum Type {
+public enum ObjectType {
     PLANET,
     STAR,
     BLACK_HOLE;

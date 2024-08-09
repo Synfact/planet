@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.planet.model.ObjectType.*;
 import static com.example.planet.model.Type.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,9 +44,10 @@ public class StarObjectService {
 
     public void defineTypeOfStar(final StarObject starObject) {
         if (starObject.getMass() > 1000L && starObject.getMass() < 10000L) {
-            starObject.setType(PLANET);
+
+            starObject.setObjectType(PLANET);
         } else if (starObject.getMass() > 10000L && starObject.getMass() < 100000L) {
-            starObject.setType(STAR);
+            starObject.setObjectType(STAR);
         } else
             starObject.setType(BLACK_HOLE);
     }

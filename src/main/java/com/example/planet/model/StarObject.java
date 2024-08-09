@@ -28,6 +28,7 @@ public class StarObject{
 
     private Long discoverySourceId;
 
-    private Enum type;
-
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ObjectType objectType;
 }
