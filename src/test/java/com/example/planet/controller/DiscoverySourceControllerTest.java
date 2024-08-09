@@ -1,7 +1,6 @@
 package com.example.planet.controller;
 
 import com.example.planet.model.DiscoverySource;
-import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.service.DiscoverySourceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
