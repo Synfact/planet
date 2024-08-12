@@ -45,14 +45,7 @@ public class DiscoverySourceController {
     }
 
     @PutMapping("/discoverySource/{id}")
-    public Optional<DiscoverySource> updateDiscoverySource(@PathVariable Long id, @RequestBody DiscoverySource discoverySourceDetails) {
-        return discoverySourceService.getDiscoverySourceById(id)
-                .map(discoverySource -> {
-                    discoverySource.setName(discoverySourceDetails.getName());
-                    discoverySource.setType(discoverySourceDetails.getType());
-                    discoverySource.setEstablishmentDate(discoverySourceDetails.getEstablishmentDate());
-                    discoverySource.setStateOwner(discoverySourceDetails.getStateOwner());
-                    return discoverySourceService.saveOneDiscoverySource(discoverySource);
-                });
+    public DiscoverySource updateDiscoverySource(@PathVariable Long id, @RequestBody DiscoverySource discoverySourceDetails) {
+        return discoverySourceService.updateDiscoverySource(id, discoverySourceDetails);
     }
 }
