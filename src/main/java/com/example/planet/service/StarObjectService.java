@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.example.planet.model.ObjectType.*;
-import static com.example.planet.model.Type.*;
 
 
 @Service
@@ -52,16 +51,12 @@ public class StarObjectService {
         Optional<StarObject> existingObject = starObjectRepository.findById(id);
         if (existingObject.isPresent()) {
             var object = existingObject.get();
-            return checkUpdate(starObject, object);
+            return checkIfUpdateStarNeeded(starObject, object);
         }
         return starObject;
     }
 
-    public boolean checkExistenceOfDiscoverySource(final StarObject starObject) {
-        return discoverySourceService.getDiscoverySourceById(starObject.getDiscoverySourceId()).isPresent();
-    }
-
-    public StarObject checkUpdate(final StarObject starObject, StarObject existingObject) {
+    private StarObject checkIfUpdateStarNeeded(final StarObject starObject, StarObject existingObject) {
         if (Objects.nonNull(starObject.getName())) {
             existingObject.setName(starObject.getName());
         }
@@ -81,13 +76,17 @@ public class StarObjectService {
         return starObjectRepository.save(existingObject);
     }
 
-    public void defineTypeOfStar(final StarObject starObject) {
+    private void defineTypeOfStar(final StarObject starObject) {
         if (starObject.getMass() > 1000L && starObject.getMass() < 10000L) {
 
             starObject.setObjectType(PLANET);
         } else if (starObject.getMass() > 10000L && starObject.getMass() < 100000L) {
             starObject.setObjectType(STAR);
         } else
-            starObject.setType(BLACK_HOLE);
+            starObject.setObjectType(BLACK_HOLE);
+    }
+
+    private boolean checkExistenceOfDiscoverySource(final StarObject starObject) {
+        return discoverySourceService.getDiscoverySourceById(starObject.getDiscoverySourceId()).isPresent();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,5 +33,30 @@ public class DiscoverySourceService {
 
     public List<DiscoverySource> saveAllDiscoverySources(final List<DiscoverySource> discoverySources) {
         return discoverySourceRepository.saveAll(discoverySources);
+    }
+
+    public DiscoverySource updateDiscoverySource(Long id, final DiscoverySource discoverySource) {
+        Optional<DiscoverySource> existingSource = discoverySourceRepository.findById(id);
+        if (existingSource.isPresent()) {
+            var object = existingSource.get();
+            return checkIfUpdateSourceNeeded(discoverySource, object);
+        }
+        return discoverySource;
+    }
+
+    private DiscoverySource checkIfUpdateSourceNeeded(DiscoverySource discoverySource, DiscoverySource existingSource) {
+        if(Objects.nonNull(discoverySource.getName())){
+            existingSource.setName(discoverySource.getName());
+        }
+        if(Objects.nonNull(discoverySource.getType())){
+            existingSource.setType(discoverySource.getType());
+        }
+        if(Objects.nonNull(discoverySource.getEstablishmentDate())){
+            existingSource.setEstablishmentDate(discoverySource.getEstablishmentDate());
+        }
+        if(Objects.nonNull(discoverySource.getStateOwner())){
+            existingSource.setStateOwner(discoverySource.getStateOwner());
+        }
+        return discoverySourceRepository.save(existingSource);
     }
 }
