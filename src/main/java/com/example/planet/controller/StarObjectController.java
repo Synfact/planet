@@ -1,7 +1,6 @@
 package com.example.planet.controller;
 
 import com.example.planet.model.StarObject;
-import com.example.planet.repository.StarObjectRepository;
 import com.example.planet.service.StarObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -12,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -36,8 +36,10 @@ public class StarObjectController {
     }
 
     @PostMapping("/object")
-    public StarObject addNewStarObject(@RequestBody StarObject starObject) {
-        return starObjectService.saveOneStarObject(starObject);
+    public ResponseEntity<StarObject> addNewStarObject(@RequestBody StarObject starObject) {
+        return Objects.isNull(starObject.getId())
+                ? new ResponseEntity<>(starObject,HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(starObject,HttpStatus.OK);
     }
 
     @PostMapping("/objects")
@@ -45,18 +47,8 @@ public class StarObjectController {
         return starObjectService.saveManyStarObjects(starObject);
     }
 
-    @PutMapping("/object")
-    public Optional<StarObject> updateStarObject(@PathVariable Long id, @RequestBody StarObject starObject) {
-        return starObjectService.getStarObjectById(id)
-                .map(starObject1 -> {
-                            starObject1.setName(starObject.getName());
-                            starObject1.setEquatorialDiameter(starObject.getEquatorialDiameter());
-                            starObject1.setDiscoverySourceId(starObject.getDiscoverySourceId());
-                            starObject1.setDiscoveryDate(starObject.getDiscoveryDate());
-                            starObject1.setMass(starObject.getMass());
-                            return starObjectService.saveOneStarObject(starObject1);
-                        }
-                );
+    @PutMapping("/object/{id}")
+    public StarObject updateStarObject(@PathVariable Long id, @RequestBody StarObject starObject) {
+        return starObjectService.updateStarObject(id,starObject);
     }
-
 }
