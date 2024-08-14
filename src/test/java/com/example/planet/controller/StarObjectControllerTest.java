@@ -90,9 +90,9 @@ class StarObjectControllerTest {
         when(starObjectService.saveOneStarObject(starObject)).thenReturn(updatedStarObject);
         var actual = starObjectController.updateStarObject(21L, updatedStarObject);
 
-        assertEquals(updatedStarObject.getEquatorialDiameter(), actual.get().getEquatorialDiameter(), "should return 2L");
-        assertEquals(updatedStarObject.getName(), actual.get().getName(), "should return updatedName");
-        assertEquals(updatedStarObject.getDiscoveryDate(), actual.get().getDiscoveryDate(), "should return 2020-01-01");
+        assertEquals(updatedStarObject.getEquatorialDiameter(), actual.getEquatorialDiameter(), "should return 2L");
+        assertEquals(updatedStarObject.getName(), actual.getName(), "should return updatedName");
+        assertEquals(updatedStarObject.getDiscoveryDate(), actual.getDiscoveryDate(), "should return 2020-01-01");
     }
 
     private static StarObject buildStarObject(Long id) {
