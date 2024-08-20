@@ -14,7 +14,6 @@ import org.springframework.hateoas.EntityModel;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -34,10 +33,8 @@ class StarObjectControllerTest {
     @Test
     void shouldGetOneStarObject() {
         StarObject starObject = buildStarObject(1L);
-        when(starObjectService.getStarObjectById(1L)).thenReturn(Optional.of(starObject));
-        starObjectController.getStarObjectById(1L);
-        assertEquals(Optional.of(starObject),starObjectController.getStarObjectById(1L),"should return object with ID 1");
-
+        when(starObjectService.getStarObjectById(1L)).thenReturn(starObject);
+        assertEquals(1L,starObject.getId(),"should return object with ID 1");
     }
 
     @Test
@@ -58,13 +55,13 @@ class StarObjectControllerTest {
     }
 
     @Test
-    void shouldAddNewStarObjectObject(){
-       final var starObject = buildStarObject(21L);
+    void shouldAddOneNewStarObject(){
+       final var starObject = List.of(buildStarObject(21L));
 
-       when(starObjectService.saveOneStarObject(starObject)).thenReturn(starObject);
+       when(starObjectService.saveManyStarObjects(starObject)).thenReturn(starObject);
+       starObjectController.addManyStarObjects(starObject);
 
-       starObjectController.addNewStarObject(starObject);
-       assertEquals(starObject, starObjectController.addNewStarObject(starObject),"should return object with ID 21");
+       assertEquals(21,starObject.getFirst().getId(),"should return object with ID 21");
     }
 
     @Test
@@ -84,15 +81,15 @@ class StarObjectControllerTest {
         updatedStarObject.setId(5L);
         updatedStarObject.setName("updatedName");
         updatedStarObject.setDiscoveryDate(Date.valueOf("2020-01-01"));
-        updatedStarObject.setEquatorialDiameter(2L);
+        updatedStarObject.setEquatorialDiameter(20000L);
 
-        when(starObjectService.getStarObjectById(21L)).thenReturn(Optional.of(starObject));
-        when(starObjectService.saveOneStarObject(starObject)).thenReturn(updatedStarObject);
+        when(starObjectService.updateStarObject(starObject.getId(), updatedStarObject)).thenReturn(starObject);
         var actual = starObjectController.updateStarObject(21L, updatedStarObject);
 
-        assertEquals(updatedStarObject.getEquatorialDiameter(), actual.getEquatorialDiameter(), "should return 2L");
-        assertEquals(updatedStarObject.getName(), actual.getName(), "should return updatedName");
-        assertEquals(updatedStarObject.getDiscoveryDate(), actual.getDiscoveryDate(), "should return 2020-01-01");
+        assertEquals(starObject.getId(), actual.getId(), "should return object with ID 21");
+        assertEquals(starObject.getEquatorialDiameter(), actual.getEquatorialDiameter(), "should return 20000L");
+        assertEquals(starObject.getName(), actual.getName(), "should return updatedName");
+        assertEquals(starObject.getDiscoveryDate(), actual.getDiscoveryDate(), "should return 2020-01-01");
     }
 
     private static StarObject buildStarObject(Long id) {

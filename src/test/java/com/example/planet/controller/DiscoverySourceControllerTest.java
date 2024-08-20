@@ -35,7 +35,7 @@ class DiscoverySourceControllerTest {
     @Test
     void shouldGetOneDiscoverySourceByID() {
         DiscoverySource discoverySource = buildDiscoverySource(1L);
-        when(discoverySourceService.getDiscoverySourceById(1L)).thenReturn(Optional.of(discoverySource));
+        when(discoverySourceService.getDiscoverySourceById(1L)).thenReturn(discoverySource);
 
         discoverySourceController.getDiscoverySourceById(1L);
 
@@ -60,16 +60,6 @@ class DiscoverySourceControllerTest {
     }
 
     @Test
-    void shouldAddNewDiscoverySource() {
-        final var discoverySource = buildDiscoverySource(21L);
-        when(discoverySourceService.saveOneDiscoverySource(discoverySource)).thenReturn(discoverySource);
-
-        discoverySourceController.addNewDiscoverySource(discoverySource);
-
-        assertEquals(discoverySource, discoverySourceController.addNewDiscoverySource(discoverySource));
-    }
-
-    @Test
     void shouldAddManyDiscoverySources() {
         final var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L));
 
@@ -89,14 +79,12 @@ class DiscoverySourceControllerTest {
         updatedDiscoverySource.setType("newType");
         updatedDiscoverySource.setStateOwner("owner");
 
-        when(discoverySourceService.getDiscoverySourceById(1L)).thenReturn(Optional.of(discoverySource));
-        when(discoverySourceService.saveOneDiscoverySource(discoverySource)).thenReturn(updatedDiscoverySource);
-
+        when(discoverySourceService.updateDiscoverySource(discoverySource.getId(),updatedDiscoverySource)).thenReturn(discoverySource);
         var actualDiscoverySource = discoverySourceService.updateDiscoverySource(1L,updatedDiscoverySource);
 
-        assertEquals(updatedDiscoverySource.getName(), actualDiscoverySource.getName(), "updated name should be updatedName");
-        assertEquals(updatedDiscoverySource.getType(), actualDiscoverySource.getType(), "updated type should be newType");
-        assertEquals(updatedDiscoverySource.getStateOwner(), actualDiscoverySource.getStateOwner(), "updated state owner should be owner");
+        assertEquals(discoverySource.getName(), actualDiscoverySource.getName(), "updated name should be updatedName");
+        assertEquals(discoverySource.getType(), actualDiscoverySource.getType(), "updated type should be newType");
+        assertEquals(discoverySource.getStateOwner(), actualDiscoverySource.getStateOwner(), "updated state owner should be owner");
     }
 
     private static DiscoverySource buildDiscoverySource(Long id) {
