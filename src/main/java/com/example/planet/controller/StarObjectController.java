@@ -23,16 +23,19 @@ public class StarObjectController {
 
     private final PagedResourcesAssembler<StarObject> assembler;
 
-    @GetMapping("/object")
+    @RequestMapping(value = "/objects", method = RequestMethod.GET)
     public ResponseEntity<PagedModel<EntityModel<StarObject>>> getAllStarObjects(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size) {
         var starObjects = assembler.toModel(starObjectService.getAllStarObjects(page, size));
         return new ResponseEntity<>(starObjects, HttpStatus.OK);
     }
 
-    @GetMapping("/object/{id}")
-    public Optional<StarObject> getStarObjectById(@PathVariable Long id) {
-        return starObjectService.getStarObjectById(id);
+    @RequestMapping(value = "/objects", method = RequestMethod.GET)
+    public ResponseEntity<StarObject> getStarObjects(@PathVariable Long id) {
+
+        var starObjects = starObjectService.getStarObjectById(id);
+
+        return new ResponseEntity(starObjects, HttpStatus.OK);
     }
 
     @PostMapping("/object")
