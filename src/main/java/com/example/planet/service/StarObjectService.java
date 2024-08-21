@@ -1,6 +1,7 @@
 package com.example.planet.service;
 
 import com.example.planet.model.StarObject;
+import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.repository.StarObjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,29 +23,23 @@ public class StarObjectService {
     private final StarObjectRepository starObjectRepository;
 
     private final DiscoverySourceService discoverySourceService;
+    private final DiscoverySourceRepository discoverySourceRepository;
 
     public Page<StarObject> getAllStarObjects(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return starObjectRepository.findAll(pageable);
     }
 
-    public Optional<StarObject> getStarObjectById(Long id) {
-        return starObjectRepository.findById(id);
+    public StarObject getStarObjectById(Long id) {
+        return starObjectRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     public List<StarObject> saveManyStarObjects(final List<StarObject> starObject) {
-        for (StarObject o : starObject) {
-            defineTypeOfStar(o);
-        }
-        return starObjectRepository.saveAll(starObject);
-    }
-
-    public StarObject saveOneStarObject(final StarObject starObject) {
-        if (checkExistenceOfDiscoverySource(starObject)) {
-            defineTypeOfStar(starObject);
-            return starObjectRepository.save(starObject);
-        }
-        return starObject;
+        final List<StarObject> objects = starObject.stream()
+                .filter(this::checkExistenceOfDiscoverySource)
+                .map(this::defineTypeOfStar)
+                .toList();
+        return starObjectRepository.saveAll(objects);
     }
 
     public StarObject updateStarObject(Long id, final StarObject starObject) {
@@ -76,7 +71,7 @@ public class StarObjectService {
         return starObjectRepository.save(existingObject);
     }
 
-    private void defineTypeOfStar(final StarObject starObject) {
+    private StarObject defineTypeOfStar(final StarObject starObject) {
         if (starObject.getMass() > 1000L && starObject.getMass() < 10000L) {
 
             starObject.setObjectType(PLANET);
@@ -84,9 +79,10 @@ public class StarObjectService {
             starObject.setObjectType(STAR);
         } else
             starObject.setObjectType(BLACK_HOLE);
+        return starObject;
     }
 
     private boolean checkExistenceOfDiscoverySource(final StarObject starObject) {
-        return discoverySourceService.getDiscoverySourceById(starObject.getDiscoverySourceId()).isPresent();
+        return discoverySourceRepository.findById(starObject.getDiscoverySourceId()).isPresent();
     }
 }

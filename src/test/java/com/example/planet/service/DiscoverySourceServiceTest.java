@@ -2,6 +2,7 @@ package com.example.planet.service;
 
 import com.example.planet.model.DiscoverySource;
 import com.example.planet.repository.DiscoverySourceRepository;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -30,14 +32,15 @@ class DiscoverySourceServiceTest {
     @Test
     void shouldGetOneDiscoverySourceById() {
         DiscoverySource discoverySource = buildDiscoverySource(1L);
+        when(discoverySourceRepository.findById(discoverySource.getId())).thenReturn(Optional.of(discoverySource));
 
-        discoverySourceService.getDiscoverySourceById(1L);
+        var actual = discoverySourceService.getDiscoverySourceById(1L);
 
-        assertEquals(1L, discoverySource.getId(),"discovery source should be 1L");
-        assertEquals("Hubble", discoverySource.getName(), "discovery source should be Hubble");
-        assertEquals("USA", discoverySource.getStateOwner(), "discovery source should be USA");
-        assertEquals((Date.valueOf("1990-04-25")), discoverySource.getEstablishmentDate(), "discovery source should be 1990-04-25");
-        assertEquals("Telescope", discoverySource.getType(), "discovery source should be Telescope");
+        assertEquals(1L, actual.getId(),"discovery source should be 1L");
+        assertEquals("Hubble", actual.getName(), "discovery source should be Hubble");
+        assertEquals("USA", actual.getStateOwner(), "discovery source should be USA");
+        assertEquals((Date.valueOf("1990-04-25")), actual.getEstablishmentDate(), "discovery source should be 1990-04-25");
+        assertEquals("Telescope", actual.getType(), "discovery source should be Telescope");
 
     }
 
@@ -58,22 +61,27 @@ class DiscoverySourceServiceTest {
     void shouldSaveOneDiscoverySourceSource(){
         final var discoverySource = buildDiscoverySource(3L);
 
-        discoverySourceService.saveOneDiscoverySource(discoverySource);
+        when(discoverySourceRepository.save(discoverySource)).thenReturn(discoverySource);
+        var actual = discoverySourceService.saveOneDiscoverySource(discoverySource);
 
-        assertEquals(3, discoverySource.getId(),"discovery source should have ID 3");
-        assertEquals("Hubble", discoverySource.getName(), "discovery source should be called Hubble");
+        assertEquals(3, actual.getId(),"discovery source should have ID 3");
+        assertEquals("Hubble", actual.getName(), "discovery source should be called Hubble");
     }
 
     @Test
     void shouldsaveManySources(){
         final var discoverySources = List.of(buildDiscoverySource(5L), buildDiscoverySource(6L), buildDiscoverySource(7L));
 
-        discoverySourceService.saveAllDiscoverySources(discoverySources);
+        when(discoverySourceRepository.saveAll(discoverySources)).thenReturn(discoverySources);
+        var actual = discoverySourceService.saveAllDiscoverySources(discoverySources);
 
-        assertEquals(3, discoverySources.size(),"discovery sources should have 3 elements");
-        assertEquals(5L,discoverySources.get(0).getId(),"discovery source should have id 5");
-        assertEquals(6L,discoverySources.get(1).getId(),"discovery source should have id 6");
-        assertEquals(7L,discoverySources.get(2).getId(),"discovery source should have id 7");
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(actual.size()).as("discovery source should have id 5").isEqualTo(3);
+            softly.assertThat(actual.get(0).getId()).as("discovery source should have id 5").isEqualTo(5L);
+            softly.assertThat(actual.get(1).getId()).as("discovery source should have id 6").isEqualTo(6L);
+            softly.assertThat(actual.get(2).getId()).as("discovery source should have id 7").isEqualTo(7L);
+
+        });
     }
 
     private static DiscoverySource buildDiscoverySource(Long id){

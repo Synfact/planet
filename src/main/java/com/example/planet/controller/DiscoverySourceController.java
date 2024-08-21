@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -22,29 +21,25 @@ public class DiscoverySourceController {
 
     private final PagedResourcesAssembler<DiscoverySource> assembler;
 
-    @GetMapping("/sources")
-    public ResponseEntity<PagedModel<EntityModel<DiscoverySource>>> getAllDiscoverySources(int page, int size) {
+    @RequestMapping(value = "/sources", method = RequestMethod.GET)
+    public ResponseEntity<PagedModel<EntityModel<DiscoverySource>>> getAllDiscoverySources(@RequestParam(defaultValue = "0") int page,
+                                                                                           @RequestParam(defaultValue = "10") int size) {
         var discoverySources = assembler.toModel(discoverySourceService.getAllDiscoverySources(page, size));
         return new ResponseEntity<>(discoverySources, HttpStatus.OK);
     }
 
-    @GetMapping("/source/{id}")
-    public Optional<DiscoverySource> getDiscoverySourceById(@RequestParam Long id) {
-        return discoverySourceService.getDiscoverySourceById(id);
-    }
-
-    @PostMapping("/discoverySource")
-    public DiscoverySource addNewDiscoverySource(@RequestBody DiscoverySource source) {
-        return discoverySourceService.saveOneDiscoverySource(source);
+    @RequestMapping(value = "/sources/{id}", method = RequestMethod.GET)
+    public ResponseEntity<DiscoverySource> getDiscoverySourceById(@PathVariable Long id) {
+        var discoverySource = discoverySourceService.getDiscoverySourceById(id);
+        return new ResponseEntity<>(discoverySource, HttpStatus.OK);
     }
 
     @PostMapping("/discoverySources")
     public List<DiscoverySource> addManyDiscoverySources(@RequestBody List<DiscoverySource> source) {
-        System.out.println("addNewSources");
         return discoverySourceService.saveAllDiscoverySources(source);
     }
 
-    @PutMapping("/discoverySource/{id}")
+    @PutMapping("/discoverySources/{id}")
     public DiscoverySource updateDiscoverySource(@PathVariable Long id, @RequestBody DiscoverySource discoverySourceDetails) {
         return discoverySourceService.updateDiscoverySource(id, discoverySourceDetails);
     }

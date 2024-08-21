@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 
 @RestController
@@ -25,33 +23,26 @@ public class StarObjectController {
 
     @RequestMapping(value = "/objects", method = RequestMethod.GET)
     public ResponseEntity<PagedModel<EntityModel<StarObject>>> getAllStarObjects(@RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size) {
+                                                                                 @RequestParam(defaultValue = "10") int size) {
         var starObjects = assembler.toModel(starObjectService.getAllStarObjects(page, size));
         return new ResponseEntity<>(starObjects, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/objects", method = RequestMethod.GET)
+    @RequestMapping(value = "/objects/{id}", method = RequestMethod.GET)
     public ResponseEntity<StarObject> getStarObjects(@PathVariable Long id) {
 
         var starObjects = starObjectService.getStarObjectById(id);
 
-        return new ResponseEntity(starObjects, HttpStatus.OK);
-    }
-
-    @PostMapping("/object")
-    public ResponseEntity<StarObject> addNewStarObject(@RequestBody StarObject starObject) {
-        return Objects.isNull(starObject.getId())
-                ? new ResponseEntity<>(starObject,HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(starObject,HttpStatus.OK);
+        return new ResponseEntity<>(starObjects, HttpStatus.OK);
     }
 
     @PostMapping("/objects")
-    public List<StarObject> addManyStarObjects(@RequestBody List<StarObject> starObject) {
-        return starObjectService.saveManyStarObjects(starObject);
+    public ResponseEntity<List<StarObject>> addManyStarObjects(@RequestBody List<StarObject> starObject) {
+        return new ResponseEntity<>(starObjectService.saveManyStarObjects(starObject), HttpStatus.OK);
     }
 
-    @PutMapping("/object/{id}")
+    @PutMapping("/objects/{id}")
     public StarObject updateStarObject(@PathVariable Long id, @RequestBody StarObject starObject) {
-        return starObjectService.updateStarObject(id,starObject);
+        return starObjectService.updateStarObject(id, starObject);
     }
 }

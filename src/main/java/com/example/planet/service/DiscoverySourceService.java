@@ -23,8 +23,8 @@ public class DiscoverySourceService {
         return discoverySourceRepository.findAll(pageable);
     }
 
-    public Optional<DiscoverySource> getDiscoverySourceById(Long id) {
-        return discoverySourceRepository.findById(id);
+    public DiscoverySource getDiscoverySourceById(Long id) {
+        return discoverySourceRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     public DiscoverySource saveOneDiscoverySource(final DiscoverySource discoverySource) {
