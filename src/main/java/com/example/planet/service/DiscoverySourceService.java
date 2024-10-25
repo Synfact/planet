@@ -1,5 +1,6 @@
 package com.example.planet.service;
 
+import com.example.planet.exception.ExceptionForDiscoverySource;
 import com.example.planet.model.DiscoverySource;
 import com.example.planet.repository.DiscoverySourceRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class DiscoverySourceService {
     }
 
     public DiscoverySource getDiscoverySourceById(Long id) {
-        return discoverySourceRepository.findById(id).orElseThrow(RuntimeException::new);
+        return discoverySourceRepository.findById(id).orElseThrow(ExceptionForDiscoverySource::new);
     }
 
     public DiscoverySource saveOneDiscoverySource(final DiscoverySource discoverySource) {
@@ -48,13 +49,13 @@ public class DiscoverySourceService {
         if(Objects.nonNull(discoverySource.getName())){
             existingSource.setName(discoverySource.getName());
         }
-        if(Objects.nonNull(discoverySource.getType())){
+        if (Objects.nonNull(discoverySource.getType())) {
             existingSource.setType(discoverySource.getType());
         }
-        if(Objects.nonNull(discoverySource.getEstablishmentDate())){
+        if (Objects.nonNull(discoverySource.getEstablishmentDate())) {
             existingSource.setEstablishmentDate(discoverySource.getEstablishmentDate());
         }
-        if(Objects.nonNull(discoverySource.getStateOwner())){
+        if (Objects.nonNull(discoverySource.getStateOwner())) {
             existingSource.setStateOwner(discoverySource.getStateOwner());
         }
         return discoverySourceRepository.save(existingSource);

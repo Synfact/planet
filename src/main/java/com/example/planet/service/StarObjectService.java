@@ -1,5 +1,6 @@
 package com.example.planet.service;
 
+import com.example.planet.exception.ExceptionForStarObject;
 import com.example.planet.model.StarObject;
 import com.example.planet.repository.DiscoverySourceRepository;
 import com.example.planet.repository.StarObjectRepository;
@@ -22,7 +23,6 @@ public class StarObjectService {
 
     private final StarObjectRepository starObjectRepository;
 
-    private final DiscoverySourceService discoverySourceService;
     private final DiscoverySourceRepository discoverySourceRepository;
 
     public Page<StarObject> getAllStarObjects(int page, int size) {
@@ -31,7 +31,7 @@ public class StarObjectService {
     }
 
     public StarObject getStarObjectById(Long id) {
-        return starObjectRepository.findById(id).orElseThrow(RuntimeException::new);
+        return starObjectRepository.findById(id).orElseThrow(ExceptionForStarObject::new);
     }
 
     public List<StarObject> saveManyStarObjects(final List<StarObject> starObject) {
@@ -46,12 +46,12 @@ public class StarObjectService {
         Optional<StarObject> existingObject = starObjectRepository.findById(id);
         if (existingObject.isPresent()) {
             var object = existingObject.get();
-            return checkIfUpdateStarNeeded(starObject, object);
+            return starObjectEnricher(starObject, object);
         }
         return starObject;
     }
 
-    private StarObject checkIfUpdateStarNeeded(final StarObject starObject, StarObject existingObject) {
+    private StarObject starObjectEnricher(final StarObject starObject, StarObject existingObject) {
         if (Objects.nonNull(starObject.getName())) {
             existingObject.setName(starObject.getName());
         }
