@@ -1,5 +1,6 @@
 package com.example.planet.controller;
 
+import com.example.planet.exception.ExceptionForDiscoverySource;
 import com.example.planet.model.DiscoverySource;
 import com.example.planet.service.DiscoverySourceService;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ class DiscoverySourceControllerTest {
     }
 
     @Test
-    void shouldGetAllDiscoverySources() {
+    void shouldGetAllDiscoverySources() throws ExceptionForDiscoverySource {
         final var discoverySources = List.of(buildDiscoverySource(1L), buildDiscoverySource(2L), buildDiscoverySource(8L));
         final PageImpl<DiscoverySource> page = new PageImpl<>(discoverySources);
         final PagedModel<EntityModel<DiscoverySource>> pagedModel = PagedModel.wrap(discoverySources,new PagedModel.PageMetadata(1,1,1));

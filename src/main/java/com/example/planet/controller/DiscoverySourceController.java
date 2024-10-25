@@ -21,14 +21,14 @@ public class DiscoverySourceController {
 
     private final PagedResourcesAssembler<DiscoverySource> assembler;
 
-    @RequestMapping(value = "/sources", method = RequestMethod.GET)
+    @GetMapping(value = "/sources")
     public ResponseEntity<PagedModel<EntityModel<DiscoverySource>>> getAllDiscoverySources(@RequestParam(defaultValue = "0") int page,
                                                                                            @RequestParam(defaultValue = "10") int size) {
         var discoverySources = assembler.toModel(discoverySourceService.getAllDiscoverySources(page, size));
         return new ResponseEntity<>(discoverySources, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/sources/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/sources/{id}")
     public ResponseEntity<DiscoverySource> getDiscoverySourceById(@PathVariable Long id) {
         var discoverySource = discoverySourceService.getDiscoverySourceById(id);
         return new ResponseEntity<>(discoverySource, HttpStatus.OK);

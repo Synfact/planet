@@ -10,7 +10,6 @@ import java.util.Date;
 @Table(name="t_discovery_source")
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class DiscoverySource {
 
     @Id

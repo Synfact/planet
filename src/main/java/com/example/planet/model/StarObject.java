@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @RequiredArgsConstructor
 public class StarObject{
-
+//dobaviti  validatii
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;

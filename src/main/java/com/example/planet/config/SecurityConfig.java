@@ -1,0 +1,73 @@
+//package com.example.planet.config;
+//
+//import com.example.planet.model.Role;
+//import org.springframework.boot.autoconfigure.security.SecurityProperties;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.http.HttpMethod;
+//import org.springframework.security.config.annotation.web.PasswordManagementDsl;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+//import org.springframework.security.web.SecurityFilterChain;
+//
+//import static org.springframework.security.config.Customizer.withDefaults;
+//
+//@Configuration
+//@EnableWebSecurity
+//public class SecurityConfig {
+////4 способа инициализировать бин
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        manager.createUser(User.withUsername("user")
+//                .password(passwordEncoder.encode("password"))
+//                .roles(String.valueOf(Role.USER)).build());
+//        manager.createUser(User.withUsername("admin")
+//                .password(passwordEncoder.encode("password"))
+//                .roles(String.valueOf(Role.ADMIN)).build());
+//                return manager;
+//    }
+//
+//    //@Bean
+//    //protected void configure(HttpSecurity http) throws Exception {
+//    //    http
+//    //            .authorizeHttpRequests(authz -> authz
+//    //            .requestMatchers("/").permitAll()
+//    //            .requestMatchers(HttpMethod.GET,"/api/**").hasAnyRole(Role.ADMIN.name(),Role.USER.name())
+//    //            .requestMatchers(HttpMethod.POST,"/api/**").hasAnyRole(Role.ADMIN.name())
+//    //            .requestMatchers(HttpMethod.PUT,"/api/**").hasAnyRole(Role.ADMIN.name())
+//    //            .requestMatchers(HttpMethod.DELETE,"/api/**").hasAnyRole(Role.ADMIN.name())
+//    //            .anyRequest().authenticated());
+//    //}
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests((authz) -> authz
+//                        .anyRequest().authenticated()
+//                )
+//                .httpBasic(withDefaults());
+//        return http.build();
+//    }
+//
+//    @Bean
+//    protected UserDetailsService userDetailsService() {
+//        return new InMemoryUserDetailsManager(
+//                User.builder()
+//                        .username("admin")
+//                        .password("admin")
+//                        .roles("ADMIN")
+//                        .build());
+//
+//    }
+//
+//    @Bean
+//    protected PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder(12);
+//    }
+//}
